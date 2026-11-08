@@ -1,0 +1,109 @@
+<div class="detail-page">
+  <header class="detail-header container">
+    <app-brand />
+    <a class="text-link" routerLink="/result"><app-icon name="arrowLeft" /> Back to my match</a>
+  </header>
+
+  @if (shop(); as shop) {
+    <main class="detail-main container">
+      <section class="detail-hero">
+        <img [src]="shop.imageUrl" [alt]="shop.name + ' café'" />
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <span class="eyebrow">Café details</span>
+          <h1>{{ shop.name }}</h1>
+          <p>{{ shop.tagline }}</p>
+          <div class="hero-badges">
+            <span class="hero-badge"><app-icon name="star" /> {{ shop.rating }} <small>({{ shop.reviewCount }})</small></span>
+            <span class="hero-badge"><app-icon name="mapPin" /> {{ shop.location }}</span>
+            <span class="hero-badge"><app-icon name="wallet" /> {{ shop.priceRange }}</span>
+            <span class="hero-badge"><app-icon name="clock" /> {{ shop.distanceMinutes }} min away</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="detail-grid">
+        <div class="detail-content">
+          <article class="detail-block">
+            <span class="eyebrow">The atmosphere</span>
+            <h2>A proper look around</h2>
+            <p class="lead">{{ shop.description }}</p>
+            <div class="tag-row">
+              @for (tag of shop.atmosphere; track tag) {
+                <span class="tag">{{ tag }}</span>
+              }
+            </div>
+          </article>
+
+          <article class="detail-block">
+            <span class="eyebrow">What to order</span>
+            <h2>Specialties</h2>
+            <ul class="specialty-list">
+              @for (item of shop.specialties; track item) {
+                <li>
+                  <span class="specialty-icon"><app-icon name="coffee" /></span>
+                  {{ item }}
+                </li>
+              }
+            </ul>
+          </article>
+
+          <article class="detail-block">
+            <span class="eyebrow">Good to know</span>
+            <h2>Amenities</h2>
+            <div class="amenity-grid">
+              @for (amenity of shop.amenities; track amenity) {
+                <div class="amenity">
+                  <span class="amenity-icon"><app-icon [name]="amenityMeta(amenity).icon" /></span>
+                  <span>{{ amenityMeta(amenity).label }}</span>
+                </div>
+              }
+            </div>
+          </article>
+        </div>
+
+        <aside class="detail-side">
+          <div class="side-card">
+            <h3>Plan your visit</h3>
+            <dl class="side-list">
+              <div>
+                <dt>Address</dt>
+                <dd>{{ shop.location }}</dd>
+              </div>
+              <div>
+                <dt>Distance</dt>
+                <dd>{{ shop.distanceMinutes }} minutes away</dd>
+              </div>
+              <div>
+                <dt>Seating</dt>
+                <dd>{{ seatingLabel(shop.seating) }}</dd>
+              </div>
+              <div>
+                <dt>Price</dt>
+                <dd>{{ shop.priceRange }} per person</dd>
+              </div>
+              <div>
+                <dt>Rating</dt>
+                <dd>{{ shop.rating }} / 5 · {{ shop.reviewCount }} reviews</dd>
+              </div>
+            </dl>
+
+            <button class="btn btn-primary" type="button" (click)="findAnother()">
+              <app-icon name="shuffle" />
+              Find another café
+            </button>
+            <a class="btn btn-secondary" routerLink="/result">
+              <app-icon name="arrowLeft" />
+              Back to my match
+            </a>
+          </div>
+
+          <div class="side-note">
+            <span class="side-note-icon"><app-icon name="info" /></span>
+            <p>Every detail here comes straight from the café's profile — nothing invented, nothing assumed.</p>
+          </div>
+        </aside>
+      </section>
+    </main>
+  }
+</div>

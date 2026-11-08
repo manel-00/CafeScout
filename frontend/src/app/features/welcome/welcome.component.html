@@ -1,0 +1,97 @@
+<div class="welcome">
+  <header class="site-header container">
+    <app-brand />
+    <p class="header-note">Coffee discovery, made personal.</p>
+    <div class="header-tools">
+      @if (hasProgress()) {
+        <button class="btn btn-ghost btn-sm" type="button" (click)="start()">
+          Continue quiz
+          <app-icon name="arrowRight" />
+        </button>
+      }
+      <app-theme-toggle />
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-copy">
+        <span class="eyebrow">Your next favourite café</span>
+        <h1>Find the café that fits your <em>mood.</em></h1>
+        <p class="hero-lead">
+          Ten quick questions about your day, your taste, and your ideal corner — and we'll point you to a coffee
+          shop that feels just right.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-lg" type="button" (click)="start()">
+            {{ hasProgress() ? 'Continue the quiz' : 'Start the discovery' }}
+            <app-icon name="arrowRight" />
+          </button>
+          @if (hasProgress()) {
+            <button class="btn btn-ghost" type="button" (click)="freshStart()">Start fresh</button>
+          }
+        </div>
+        <dl class="hero-stats">
+          <div>
+            <dt>10</dt>
+            <dd>handpicked cafés</dd>
+          </div>
+          <div>
+            <dt>10</dt>
+            <dd>quick questions</dd>
+          </div>
+          <div>
+            <dt>~2 min</dt>
+            <dd>to your match</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <figure class="visual-main">
+          <img [src]="featured.imageUrl" alt="" />
+          <figcaption class="floating-card">
+            <span class="floating-icon"><app-icon name="star" /></span>
+            <span class="floating-copy">
+              <strong>{{ featured.rating }}</strong>
+              <span>{{ featured.name }} · {{ featured.atmosphere[0] }}</span>
+            </span>
+          </figcaption>
+        </figure>
+        <figure class="visual-small">
+          <img [src]="heroSmallOne.imageUrl" alt="" />
+        </figure>
+        <figure class="visual-small">
+          <img [src]="heroSmallTwo.imageUrl" alt="" />
+        </figure>
+        <span class="visual-note"><app-icon name="coffee" /> Your table is waiting</span>
+      </div>
+    </section>
+
+    <section class="how container" aria-label="How CafeScout works">
+      <article>
+        <span class="how-number">01</span>
+        <span class="how-icon"><app-icon name="target" /></span>
+        <h2>Tell us about your day</h2>
+        <p>Work, unwind, catch up — start with why you're going and how you feel.</p>
+      </article>
+      <article>
+        <span class="how-number">02</span>
+        <span class="how-icon"><app-icon name="shuffle" /></span>
+        <h2>We read the room</h2>
+        <p>Your vibe, your budget, your must-haves. We take the whole picture into account.</p>
+      </article>
+      <article>
+        <span class="how-number">03</span>
+        <span class="how-icon"><app-icon name="coffee" /></span>
+        <h2>Meet your café</h2>
+        <p>One thoughtful pick, with a proper explanation of why it suits you.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="welcome-footer container">
+    <p>No account. No noise. Just a better cup of coffee.</p>
+    <span>CafeScout · made for slow afternoons</span>
+  </footer>
+</div>

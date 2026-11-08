@@ -1,0 +1,155 @@
+<div class="result-page">
+  <header class="result-header container">
+    <app-brand />
+    <div class="header-tools">
+      <button class="text-link" type="button" (click)="startOver()">Start over</button>
+      <app-theme-toggle />
+    </div>
+  </header>
+
+  <main class="result-main container">
+    @for (rec of recommendationList(); track rec.shop.id) {
+      <div class="result-body">
+        <section class="result-intro">
+          <span class="eyebrow">Your café match</span>
+          <h1>{{ rec.headline }}</h1>
+          <p>{{ rec.intro }}</p>
+        </section>
+
+        <section class="match-card">
+          <figure class="match-media">
+            <img [src]="rec.shop.imageUrl" [alt]="rec.shop.name + ' café'" />
+            <div class="media-badges">
+              <span class="media-badge"><app-icon name="mapPin" /> {{ rec.shop.distanceMinutes }} min away</span>
+              <span class="media-badge"><app-icon name="star" /> {{ rec.shop.rating }}</span>
+            </div>
+          </figure>
+
+          <div class="match-body">
+            <div class="match-kicker">
+              <span>{{ rec.shop.neighborhood }}</span>
+              <span class="dot"></span>
+              <span>{{ rec.shop.priceRange }}</span>
+            </div>
+
+            <h2>{{ rec.shop.name }}</h2>
+            <p class="match-tagline">{{ rec.shop.tagline }}</p>
+
+            <ul class="match-meta">
+              <li><app-icon name="mapPin" /> {{ rec.shop.location }}</li>
+              <li><app-icon name="star" /> {{ rec.shop.rating }} · {{ rec.shop.reviewCount }} reviews</li>
+            </ul>
+
+            <p class="match-description">{{ rec.shop.description }}</p>
+
+            <div class="match-tags">
+              @for (tag of rec.matchTags; track tag) {
+                <span class="tag"><app-icon name="check" /> {{ tag }}</span>
+              }
+            </div>
+
+            <div class="match-actions">
+              <button class="btn btn-primary" type="button" (click)="discoverAnother()">
+                <app-icon name="shuffle" />
+                Discover another café
+              </button>
+              <a class="btn btn-secondary" [routerLink]="['/shop', rec.shop.id]">
+                <app-icon name="info" />
+                View café details
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section class="why">
+          <div class="section-head">
+            <span class="eyebrow">Why this one</span>
+            <h2>Picked with your answers in mind</h2>
+          </div>
+
+          <div class="reasons">
+            @for (reason of rec.reasons; track reason.title) {
+              <article class="reason" [class.reason--note]="!reason.positive">
+                <span class="reason-icon"><app-icon [name]="reason.icon" /></span>
+                <div class="reason-copy">
+                  <h3>{{ reason.title }}</h3>
+                  <p>{{ reason.text }}</p>
+                </div>
+              </article>
+            }
+          </div>
+        </section>
+
+        <section class="details">
+          <div class="details-card">
+            <div class="section-head">
+              <span class="eyebrow">At the café</span>
+              <h2>What you'll find</h2>
+            </div>
+            <div class="amenity-grid">
+              @for (amenity of rec.shop.amenities; track amenity) {
+                <div class="amenity">
+                  <span class="amenity-icon"><app-icon [name]="amenityMeta(amenity).icon" /></span>
+                  <span>{{ amenityMeta(amenity).label }}</span>
+                </div>
+              }
+            </div>
+          </div>
+
+          <aside class="details-aside">
+            <div class="detail-row">
+              <span>Atmosphere</span>
+              <p>{{ rec.shop.atmosphere.join(' · ') }}</p>
+            </div>
+            <div class="detail-row">
+              <span>Specialties</span>
+              <p>{{ rec.shop.specialties.join(' · ') }}</p>
+            </div>
+            <div class="detail-row">
+              <span>Seating</span>
+              <p>{{ seatingLabel(rec.shop.seating) }}</p>
+            </div>
+            <div class="detail-row">
+              <span>Distance</span>
+              <p>{{ rec.shop.distanceMinutes }} minutes from you</p>
+            </div>
+          </aside>
+        </section>
+
+        <section class="closing-card">
+          <span class="closing-icon"><app-icon name="coffee" /></span>
+          <p>{{ rec.closing }}</p>
+        </section>
+
+        <section class="answers">
+          <div class="section-head">
+            <span class="eyebrow">Your answers</span>
+            <h2>The details you gave us</h2>
+          </div>
+
+          <div class="answer-chips">
+            @for (item of answerSummary(); track item.question) {
+              <span class="answer-chip">
+                <small>{{ item.question }}</small>
+                {{ item.value }}
+              </span>
+            }
+          </div>
+
+          <div class="answers-actions">
+            <button class="btn btn-secondary" type="button" (click)="refine()">
+              <app-icon name="arrowLeft" />
+              Refine my answers
+            </button>
+            <button class="text-link" type="button" (click)="startOver()">Start over</button>
+          </div>
+        </section>
+
+        <footer class="result-footer">
+          <span>CafeScout</span>
+          <span>A slower way to find your next coffee.</span>
+        </footer>
+      </div>
+    }
+  </main>
+</div>

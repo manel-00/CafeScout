@@ -1,0 +1,90 @@
+<div class="quiz">
+  <header class="quiz-header container">
+    <app-brand />
+    <div class="header-tools">
+      <span class="step-label">Question {{ stepNumber() }} of {{ total }}</span>
+      <button class="btn btn-ghost btn-sm" type="button" (click)="startOver()">Start over</button>
+      <app-theme-toggle />
+    </div>
+  </header>
+
+  <div class="progress-wrap container">
+    <div
+      class="progress-segments"
+      role="progressbar"
+      [attr.aria-valuenow]="progress()"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-label="Questionnaire progress"
+    >
+      @for (segment of segments(); track segment.id) {
+        <span
+          class="progress-segment"
+          [class.is-complete]="segment.complete"
+          [class.is-active]="segment.active"
+        ></span>
+      }
+    </div>
+    <span class="progress-percent">{{ progress() }}%</span>
+  </div>
+
+  <main class="quiz-main container">
+    @for (question of currentQuestions(); track question.id) {
+      <section class="question-panel">
+        <div class="question-head">
+          <span class="eyebrow">{{ question.eyebrow }}</span>
+          <span class="question-count">{{ stepNumber() }} / {{ total }}</span>
+        </div>
+
+        <h1>{{ question.title }}</h1>
+        <p class="question-subtitle">{{ question.subtitle }}</p>
+
+        <div class="options">
+          @for (option of question.options; track option.value) {
+            <button
+              type="button"
+              class="option-card"
+              [class.is-selected]="isSelected(option.value)"
+              [attr.aria-pressed]="isSelected(option.value)"
+              (click)="choose(option.value)"
+            >
+              <span class="option-icon"><app-icon [name]="option.icon" /></span>
+              <span class="option-text">
+                <span class="option-label">{{ option.label }}</span>
+                <span class="option-description">{{ option.description }}</span>
+              </span>
+              <span class="option-check"><app-icon name="check" /></span>
+            </button>
+          }
+        </div>
+
+        @if (question.multi) {
+          <p class="question-hint">
+            <app-icon name="info" />
+            {{ question.optional ? 'Choose any that appeal — or skip this one.' : 'Select as many as you like.' }}
+          </p>
+        }
+      </section>
+    }
+  </main>
+
+  <footer class="quiz-footer">
+    <div class="quiz-footer-inner container">
+      <button class="btn btn-ghost" type="button" (click)="back()" [disabled]="isFirst()">
+        <app-icon name="arrowLeft" />
+        Back
+      </button>
+
+      <span class="footer-progress">
+        @if (questionnaire.answeredCount() > 0) {
+          {{ questionnaire.answeredCount() }} answered
+        }
+      </span>
+
+      <button class="btn btn-primary" type="button" (click)="next()" [disabled]="!canContinue()">
+        {{ isLast() ? 'Find my café' : 'Continue' }}
+        <app-icon [name]="nextIcon()" />
+      </button>
+    </div>
+  </footer>
+</div>
